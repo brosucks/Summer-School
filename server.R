@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
       else
         slice = table(Motor[,input$column],useNA="no")
       
-      slice = as.integer(slice)
+      #slice = as.integer(slice)
       
       index = which(Variable_Name == names(Motor)[input$column] )
       Show_text = Variable_Explain[[index]]
@@ -30,8 +30,14 @@ shinyServer(function(input, output) {
       if(NA_ratio < 0.5 ) lbls = c(lbls,"NA")
       if(Show_text[3]=="¶}©ñÃD") plot.new()
       else{
-        pie3D(slice,labels=paste(lbls,":","(",round(slice/sum(slice),3)*100,"%)",sep=""),explode=0.1,radius=1.8,
-              main=paste(Show_text[2]) , col=c(3:5) )
+        if(length(slice)>=1){
+          if(is.na(rownames(slice)[length(slice)])) rownames(slice)[length(slice)] = "NA"
+          plot((slice) ,lwd=15)
+        }
+        else{
+          pie3D(slice,labels=paste(lbls,":","(",round(slice/sum(slice),3)*100,"%)",sep=""),explode=0.1,radius=1.8,
+                main=paste(Show_text[2]) , col=c(3:5) )
+        }
       }
   })
   
